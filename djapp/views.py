@@ -41,6 +41,12 @@ def register(request):
                 print('found it')
                 profile.profile_pic = request.FILES['profile_pic']
             profile.save()
+            userid = user.username
+            cmd=["sudo", "sacctmgr", "add", "user", userid , "account=i"]
+            proc = run(cmd, stdout=PIPE, input=b'y y')
+            p= run(cmd, stdout=PIPE, input=b'y')
+            output = print(p.stdout)
+            subprocess.call(["sacctmgr", "list", "user"])
             registered = True
         else:
             print(user_form.errors,profile_form.errors)
